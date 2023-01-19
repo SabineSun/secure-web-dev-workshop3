@@ -1,18 +1,20 @@
-const express = require('express')
-const locationController = require('./locations/locations.controller')
+const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const passport = require('passport');
+
+const locationController = require('./locations/locations.controller');
+const userController = require('./user/user.controller');
+
 require('dotenv').config();
+const app = express();
+const port = 3000;
 
-const app = express()
-const port = 3000
-
-// Middleware
-
-
-
-// Routes
-
-app.use(locationController)
+app.use(express.json());
+app.use(bodyParser.json());
+app.use(passport.initialize());
+app.use(locationController);
+app.use(userController);
 
 app.get('/', (req, res) => {
 	return res.status(200).send({

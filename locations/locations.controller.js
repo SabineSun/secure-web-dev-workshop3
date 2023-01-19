@@ -1,16 +1,29 @@
-// This file is used to map API calls (Presentation Layer) with the
-// Business-Logic layer
+// This file is used to map API calls (Presentation Layer) with the Business-Logic layer
 
 const router = require('express').Router()
 const locationsService = require('./locations.service')
 
-/*router.get('/locations', (req, res) => {
-	return res.status(200).send({locations: []})
-})*/
+router.get('/locations', async (req, res) => {
+	return res.status(200).send(await locationsService.findAll())
+})
 
-router.route('/locations')
-	.get(async (req, res) => {
-		return res.status(200).send({locations: await locationsService.findAll()});
-	})
+router.get('/locations/:id', async (req, res) => { //working
+	return res.status(200).send(await locationsService.querybyID(req.params.id));
+})
+
+router.delete('/locations/delete/:id', async(req, res) => { //working
+	return res.status(200).send(await locationsService.deleteByID(req.params.id));
+})
+
+router.patch('/locations/update/:filter/:update', async(req, res) => {
+	return res.status(200).send(await locationsService.updateDocument(req.params.filter, req.params.update));
+})
+
+router.post('/locations/create', async(req, res) => {
+	return res.status(200).send(await locationsService.createDocument());
+})
+
+
+
 
 module.exports = router
